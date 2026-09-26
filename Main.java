@@ -55,8 +55,8 @@ public class Main {
         FloatIntPair(float dist, int id) { this.dist = dist; this.id = id; }
         public int compareTo(FloatIntPair o) {
             int c = Float.compare(this.dist, o.dist);
-            if (c != 0) return Integer.compare(this.id, o.id);
-            return c;
+            if (c != 0) return c;
+            return Integer.compare(this.id, o.id);
         }
     }
     
@@ -916,7 +916,7 @@ public class Main {
                     float[] qEmb = ollama.embed(question);
                     if (qEmb.length == 0) { sendJson(ex, "{\"error\":\"Ollama unavailable\"}", 200); return; }
                     
-                    List<DocumentDB.DocHit> hits = docDB.search(qEmb, k, 0.7f); // max_dist from c++
+                    List<DocumentDB.DocHit> hits = docDB.search(qEmb, k, 1.2f); // max_dist from c++
                     StringBuilder ss = new StringBuilder("{\"contexts\":[");
                     for(int i=0; i<hits.size(); i++) {
                         if(i>0) ss.append(",");
@@ -938,7 +938,7 @@ public class Main {
                     float[] qEmb = ollama.embed(question);
                     if (qEmb.length == 0) { sendJson(ex, "{\"error\":\"Ollama unavailable\"}", 200); return; }
                     
-                    List<DocumentDB.DocHit> hits = docDB.search(qEmb, k, 0.7f);
+                    List<DocumentDB.DocHit> hits = docDB.search(qEmb, k, 1.2f);
                     StringBuilder ctx = new StringBuilder();
                     for(int i=0; i<hits.size(); i++) {
                         ctx.append("[").append(i+1).append("] ").append(hits.get(i).doc.title).append(":\n")
